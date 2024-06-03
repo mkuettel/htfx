@@ -12,7 +12,7 @@ function head(... $contents): htnode {
     return htfx_tag('head')(... $contents);
 }
 function title(string $page_title) {
-    return htfx_tag('title')($page_title . " - " . config(Site::class)->title);
+    return htfx_tag('title')($page_title);
 }
 function tbody(... $contents): htnode { return htfx_tag('tbody', [])(...$contents); }
 function thead(... $contents): htnode { return htfx_tag('thead', [])(...$contents); }
