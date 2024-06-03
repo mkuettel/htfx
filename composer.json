@@ -5,7 +5,7 @@
     "license": "LGPL3-or-later",
     "autoload": {
         "psr-4": {
-            "mkuettel\\htfx\\": "src/"
+            "htfx\\": "src/"
         }
     },
     "authors": [
