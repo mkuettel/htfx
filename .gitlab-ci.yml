@@ -49,21 +49,21 @@ build-job:
 #    - echo "Building assets"
 #    - npm run build --mode=production
 
-#unit-test-job:
-#  stage: test
-#  extends: .dependencies_cache
-#  artifacts:
-#    expire_in: 7 days
-#    when: on_success
-#    paths:
-#      - build/
-#      - vendor
-#  script:
+unit-test-job:
+  stage: test
+  extends: .dependencies_cache
+  artifacts:
+    expire_in: 7 days
+    when: on_success
+    paths:
+      - build/
+      - vendor
+  script:
 #    - cp /usr/local/etc/php/php.ini{-development,}
 #    - echo 'xdebug.mode=coverage' >> /usr/local/etc/php/php.ini
-#    - echo "Running unit tests... This will take about 60 seconds."
-#    - vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never --no-progress
-#
+    - vendor/bin/codecept build
+    - vendor/bin/codecept run Acceptance --env ci,chrome --env ci,firefox
+
 #functional-test-job:
 #  stage: test
 #  extends: .dependencies_cache
