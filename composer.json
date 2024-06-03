@@ -1,0 +1,28 @@
+{
+    "name": "mkuettel/htfx",
+    "description": "Declarative streaming templating engine for PHP 8",
+    "type": "library",
+    "license": "LGPL3-or-later",
+    "autoload": {
+        "psr-4": {
+            "mkuettel\\htfx\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Moritz K\u00fcttel",
+            "email": "moritz_kuettel+htfx@fastmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.3"
+    },
+    "require-dev": {
+        "codeception/codeception": "5.2.x-dev",
+        "vimeo/psalm": "^6.0@dev",
+        "phpstan/phpstan": "2.0.x-dev",
+        "codeception/module-phpbrowser": "*",
+        "codeception/module-asserts": "*"
+    }
+}
