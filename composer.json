@@ -14,6 +14,7 @@
             "email": "moritz_kuettel+htfx@fastmail.com"
         }
     ],
+    "minimum-stability": "stable",
     "require": {
         "php": "^8.3"
     },
