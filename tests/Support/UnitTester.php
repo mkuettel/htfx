@@ -29,7 +29,7 @@ class UnitTester extends \Codeception\Actor
 
     public function requireTemplate(string $name)
     {
-        $file = __DIR__ . '/Helper/' . $namene . '.php';
+        $file = __DIR__ . '/Helper/' . $name . '.php';
         return (require $file);
     }
 
