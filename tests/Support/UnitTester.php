@@ -23,9 +23,11 @@ class UnitTester extends \Codeception\Actor
 {
     use _generated\UnitTesterActions;
 
-    /**
-     * Define custom actions here
-     */
+    public function requireExample(string $name)
+    {
+        $file = __DIR__ . '/../../examples/' . $name . '.php';
+        return (require $file);
+    }
 
     public function requireTemplate(string $name)
     {
@@ -33,8 +35,11 @@ class UnitTester extends \Codeception\Actor
         return (require $file);
     }
 
-    public function streamTemplate(\Generator $name)
+    public function streamTemplate(\Generator $gen, $callback = null): \Generator
     {
-
+        foreach($gen as $key => $value) {
+            $value = $callback($value, key: $key);
+            yield $key => $value;
+        }
     }
 }
