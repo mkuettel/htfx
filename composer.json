@@ -4,9 +4,9 @@
     "type": "library",
     "license": "LGPL3-or-later",
     "autoload": {
-        "psr-4": {
-            "htfx\\": "src/"
-        }
+        "files": [
+            "src/htfx.php"
+        ]
     },
     "authors": [
         {
