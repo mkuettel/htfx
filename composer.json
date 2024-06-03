@@ -2,7 +2,7 @@
     "name": "mkuettel/htfx",
     "description": "Declarative streaming templating engine for PHP 8",
     "type": "library",
-    "license": "LGPL3-or-later",
+    "license": "LGPL-3.0-or-later",
     "autoload": {
         "files": [
             "src/htfx.php"
