@@ -11,9 +11,10 @@ class htnode {
 
     public const SELF_CLOSING_TAG = false;
 
-    public static function new(string $name, array $attrs, array $contents = []) {
+    public static function new(string $name, array $attrs, array $contents = []): self {
         if ( !array_is_list($attrs)) {
             // error::forInvalidAttributes($attrs); // TODO fix this
+            throw new \TypeError('Attributes must be array not a simple list');
         }
         return new htnode($name, $attrs, $contents);
     }
