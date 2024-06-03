@@ -1,10 +1,9 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace htfx\prelude\html5;
 
 use htfx\htnode;
+use PHPUnit\Runner\Baseline\Generator;
 use function htfx\htfx_tag;
 
 
@@ -79,9 +78,9 @@ function cite       ( ... $attrs): htnode { return htfx_tag('cite',       ...$at
 function figure     ( ... $attrs): htnode { return htfx_tag('figure',     ...$attrs); }
 function figcaption ( ... $attrs): htnode { return htfx_tag('figcaption', ...$attrs); }
 
-function html5(... $attrs) : \Generator {
+function html5(... $attrs) : callable {
     yield "<!doctype html>";
     $html_tag = html(... $attrs);
-    return fn(htnode $head, htnode $body) => yield from $html_tag($head, $body)->generate();
+    return fn(htnode $head, htnode $body): \Generator => yield from $html_tag($head, $body)->generate();
 }
 
