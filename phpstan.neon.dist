@@ -1,0 +1,17 @@
+parameters:
+	bootstrapFiles:
+		- vendor/autoload.php
+	paths:
+		- src
+		- tests
+	excludePaths:
+		analyseAndScan:
+			- tests/*/data/*
+			- public/
+			- writable/
+			- storage/
+			- build/
+			- target/
+			- node_modules/
+
+
