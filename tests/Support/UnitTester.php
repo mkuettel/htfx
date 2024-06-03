@@ -26,4 +26,15 @@ class UnitTester extends \Codeception\Actor
     /**
      * Define custom actions here
      */
+
+    public function requireTemplate(string $name)
+    {
+        $file = __DIR__ . '/Helper/' . $namene . '.php';
+        return (require $file);
+    }
+
+    public function streamTemplate(\Generator $name)
+    {
+
+    }
 }
