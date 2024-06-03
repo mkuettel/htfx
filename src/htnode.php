@@ -14,7 +14,7 @@ class htnode {
     public static function new(string $name, array $attrs, array $contents = []): self {
         if (!array_is_list($attrs) && !empty($attrs)) {
             // error::forInvalidAttributes($attrs); // TODO fix this
-            throw new \TypeError('Attributes must be array not a simple list');
+            throw new \TypeError("Attributes for '$name' must be array not a simple list: " . var_export($attrs, true));
         }
         return new htnode($name, $attrs, $contents);
     }
