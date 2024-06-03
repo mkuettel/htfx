@@ -79,8 +79,11 @@ function figure     ( ... $attrs): htnode { return htfx_tag('figure',     ...$at
 function figcaption ( ... $attrs): htnode { return htfx_tag('figcaption', ...$attrs); }
 
 function html5(... $attrs) : callable {
-    yield "<!doctype html>";
     $html_tag = html(... $attrs);
-    return fn(htnode $head, htnode $body): \Generator => yield from $html_tag($head, $body)->generate();
+    return function(htnode $head, htnode $body) use ($html_tag): \Generator {
+        // TODO: why not just yield a rawhtmlnode at first and return a htnode instead?
+        yield "<!doctype html>";
+        yield from $html_tag($head, $body)->generate();
+    };
 }
 
