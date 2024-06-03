@@ -62,7 +62,7 @@ unit-test-job:
 #    - cp /usr/local/etc/php/php.ini{-development,}
 #    - echo 'xdebug.mode=coverage' >> /usr/local/etc/php/php.ini
     - vendor/bin/codecept build
-    - vendor/bin/codecept run Unit
+    - vendor/bin/codecept run Unit --coverage-html --coverage-xml --coverage-text
 
 #functional-test-job:
 #  stage: test
