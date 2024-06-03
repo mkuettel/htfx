@@ -1,5 +1,4 @@
-image:
-  name: mkuettel/phpci:8.3-apache
+image: mkuettel/phpci:8.3-apache
 
 .dependencies_cache:
   cache:
@@ -14,8 +13,8 @@ cache:
     - writable/
     - build/
 
-before_script:
-  - cp env-ci .env
+#before_script:
+#  - cp env-ci .env
 #  - sed -i 's/#ServerName www.example.com/ServerName htfx.test/g' /etc/apache2/sites-available/000-default.conf
 #  - rmdir /var/www/html
 #  - ln -s $(pwd)/public /var/www/html
@@ -45,6 +44,7 @@ build-job:
     - public/dist
     - vendor
   script:
+    - echo "Installing development composer dependencies"
     - php /composer.phar install --no-interaction --no-cache
 #    - npm install
 #    - echo "Building assets"
