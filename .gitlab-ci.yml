@@ -150,6 +150,6 @@ deploy-job:
     - export VERSION=`sentry-cli releases propose-version`
     - sentry-cli releases new "$VERSION"
     - sentry-cli releases set-commits "$VERSION" --auto
-    - false # deploy to packagist
+    - "false" # deploy to packagist
     - sentry-cli releases finalize "$VERSION"
     - echo "htfx Library successfully deployed to packagist.org"
