@@ -1,0 +1,155 @@
+image:
+  name: mkuettel/phpci:8.3-apache
+
+.dependencies_cache:
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+#      - npm_modules/
+      - /tmp/composer
+    policy: pull
+
+cache:
+  paths:
+    - writable/
+    - build/
+
+before_script:
+  - cp env-ci .env
+#  - sed -i 's/#ServerName www.example.com/ServerName htfx.test/g' /etc/apache2/sites-available/000-default.conf
+#  - rmdir /var/www/html
+#  - ln -s $(pwd)/public /var/www/html
+#  - sed -i 's/Auth\(Type\|Name\|UserFile\)\|Require valid-user/#&/g' /var/www/html/.htaccess # disable basic auth, but keep rewrite rules
+
+variables:
+  COMPOSER_CACHE_DIR: "/tmp/composer"
+  SENTRY_ORG: kuettel-informatik
+  SENTRY_PROJECT: htfx
+  SENTRY_URL: https://sentry.hostmax.ch/
+
+stages:
+  - build
+  - test
+  - pkg
+  - deploy
+
+build-job:
+  stage: build
+  dependencies: [] # dont load artifacts:
+  extends: .dependencies_cache
+  cache:
+    policy: push
+  artifacts:
+    expire_in: 7 days
+    paths:
+    - public/dist
+    - vendor
+  script:
+    - php /composer.phar install --no-interaction --no-cache
+#    - npm install
+#    - echo "Building assets"
+#    - npm run build --mode=production
+
+#unit-test-job:
+#  stage: test
+#  extends: .dependencies_cache
+#  artifacts:
+#    expire_in: 7 days
+#    when: on_success
+#    paths:
+#      - build/
+#      - vendor
+#  script:
+#    - cp /usr/local/etc/php/php.ini{-development,}
+#    - echo 'xdebug.mode=coverage' >> /usr/local/etc/php/php.ini
+#    - echo "Running unit tests... This will take about 60 seconds."
+#    - vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never --no-progress
+#
+#functional-test-job:
+#  stage: test
+#  extends: .dependencies_cache
+#  artifacts:
+#    expire_in: 7 days
+#    when: on_success
+#    paths:
+#      - build/
+#      - vendor
+#  services:
+#    - mariadb:10.5
+#  script:
+#      - php spark migrate --all
+#      - php spark cache:clear
+#      - echo "Running Functional test suite using codeception and local apache webserver..."
+##      - apachectl start
+##      - curl http://localhost # is apache running?
+#      - vendor/bin/codecept build
+#      - vendor/bin/codecept run Functional --env ci
+
+psalm-test-job:
+  stage: test
+  allow_failure: true
+  extends: .dependencies_cache
+  script:
+    - echo "Running psalm..."
+    - vendor/bin/psalm
+
+#phpstan-test-job:
+#  stage: test
+#  allow_failure: true
+#  extends: .dependencies_cache
+#  script:
+#    - echo "Running phpstan..."
+#    - vendor/bin/phpstan analyse
+
+#acceptance-test-job:
+#  stage: test
+#  services:
+#    - mariadb:10.5
+#    - name: selenium/standalone-chrome
+#      alias: chrome
+#    - name: selenium/standalone-firefox
+#      alias: firefox
+#  allow_failure: true
+#  extends: .dependencies_cache
+#  artifacts:
+#    expire_in: 7 days
+#    paths:
+#      - public/dist
+#      - build/
+#      - vendor
+#  script:
+#    - php spark migrate --all
+#    - php spark cache:clear
+#    - echo "Running Acceptance test suite using codeception and local apache webserver..."
+#    - apachectl start
+#    - curl http://localhost # is apache running?
+#    - vendor/bin/codecept build
+#    - vendor/bin/codecept run Acceptance --env ci,chrome --env ci,firefox
+
+package-job:
+  stage: pkg
+  artifacts:
+    when: on_success
+    paths:
+      - htfx-*.tar.gz
+  extends: .dependencies_cache
+  script:
+    - rm -rf vendor/ # make sure we have a clean vendor directory
+    - /composer.phar install --no-dev --no-interaction --no-cache --no-progress
+    - /composer.phar dump-autoload
+    - tar cvzf htfx-$CI_COMMIT_SHA.tar.gz src doc README.md features examples features public vendor
+
+deploy-job:
+  stage: deploy
+  environment: production
+  variables:
+    # SENTRY_AUTH_TOKEN: needs to be defined in the CI/CD settings
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  script:
+    - export VERSION=`sentry-cli releases propose-version`
+    - sentry-cli releases new "$VERSION"
+    - sentry-cli releases set-commits "$VERSION" --auto
+    - false # deploy to packagist
+    - sentry-cli releases finalize "$VERSION"
+    - echo "htfx Library successfully deployed to packagist.org"
