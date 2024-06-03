@@ -135,7 +135,7 @@ package-job:
     - rm -rf vendor/ # make sure we have a clean vendor directory
     - /composer.phar install --no-dev --no-interaction --no-cache --no-progress
     - /composer.phar dump-autoload
-    - tar cvzf htfx-$CI_COMMIT_SHA.tar.gz src doc README.md features examples vendor
+    - tar cvzf htfx-$CI_COMMIT_SHA.tar.gz src doc README.md examples vendor
 
 deploy-job:
   stage: deploy
