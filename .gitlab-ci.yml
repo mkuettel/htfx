@@ -93,13 +93,13 @@ psalm-test-job:
     - echo "Running psalm..."
     - vendor/bin/psalm -c psalm.xml
 
-#phpstan-test-job:
-#  stage: test
-#  allow_failure: true
-#  extends: .dependencies_cache
-#  script:
-#    - echo "Running phpstan..."
-#    - vendor/bin/phpstan analyse
+phpstan-test-job:
+  stage: test
+  allow_failure: true
+  extends: .dependencies_cache
+  script:
+    - echo "Running phpstan..."
+    - vendor/bin/phpstan analyse
 
 #acceptance-test-job:
 #  stage: test
