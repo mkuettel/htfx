@@ -3,7 +3,6 @@
 namespace htfx\prelude\html5;
 
 use htfx\htnode;
-use PHPUnit\Runner\Baseline\Generator;
 use function htfx\htfx_tag;
 
 
