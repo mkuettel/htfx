@@ -41,7 +41,6 @@ build-job:
   artifacts:
     expire_in: 7 days
     paths:
-    - public/dist
     - vendor
   script:
     - echo "Installing development composer dependencies"
@@ -114,7 +113,6 @@ phpstan-test-job:
 #  artifacts:
 #    expire_in: 7 days
 #    paths:
-#      - public/dist
 #      - build/
 #      - vendor
 #  script:
