@@ -91,7 +91,7 @@ psalm-test-job:
   extends: .dependencies_cache
   script:
     - echo "Running psalm..."
-    - vendor/bin/psalm
+    - vendor/bin/psalm -c psalm.xml
 
 #phpstan-test-job:
 #  stage: test
